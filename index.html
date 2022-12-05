@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Vyplnte formular</h1>
+
+<form action="">
+  <label for="name">Nazov filmu:</label>
+  <input type="text" id="name" name="name"><br><br>
+  <label for="year">Rok vydania:</label>
+  <input type="text" id="year" name="year"><br><br>
+  <label for="actors">Herci vo filme:</label>
+  <input type="text" id="actors" name="actors"><br><br>
+  <button onclick="pridajFilm (event)">Submit</button><br><br>
+  <button id="key" onclick="odstranRiadok (event)">Odstrani posledny zaznam filmu</button><br><br>
+  <button onclick="vymazVsetko (event)">Vymaz vsetko</button>
+  
+</form>
+
+<div id="zobrazenie"></div>
+
+<script>
+    // musime vytvorit container , pole, do ktor0ho budeme ukladat produkty
+    let filmy = JSON.parse(localStorage.getItem("filmy"));
+
+    // musime sa opytat, ci mame nieco v subore filmy
+
+    if(filmy === null){
+        filmy = [];
+    }
+
+    let menoFilmu = document.getElementById("name");
+    let rokVydania = document.getElementById("year");
+    let herciVoFilme = document.getElementById("actors");
+    
+    let zobrazenie = document.getElementById("zobrazenie");
+
+    function vymazVsetko (event){
+        window.localStorage.clear();
+        //localStorage.removeItem("filmy");
+        console.log("clear");
+        
+    }
+    function odstranRiadok (event){ 
+              
+        // var key = document.getElementById('key');
+        //localStorage.removeItem(key)
+        console.log("removeItem");
+        
+        //window.localStorage.removeItem('key'); //remove one item   
+        //document.getElementById("filmy").deleteRow(0); 
+       
+    }
+    
+
+    //zapis o vykonanych zadaniach z minulosti
+
+    for (let i = 0; i < filmy.lenght;i++){
+        let p = document.createElement("p");
+        p.innerText = "Nazov filmu: " + filmy[i].name +"; "+ "Rok vydania: " + filmy[i].year +"; " + "Herci vo filme: " + filmy[i].actors;
+        zobrazenie.append(p);
+
+    }
+
+    function pridajFilm (event){
+
+        event.preventDefault();
+
+        filmy.push({Film: menoFilmu.value, Rok: rokVydania.value, Herci: herciVoFilme.value}); // kucerave zatvorky oddeluju film
+
+        // ulozisko localStorage 
+
+        localStorage.setItem("filmy", JSON.stringify(filmy));
+
+
+        console.log(filmy)
+
+        // zobrazenie na web. stranke
+       
+        let p = document.createElement("p");
+        p.innerText = "Nazov filmu: " +menoFilmu.value +"; "+ "Rok vydania: " +rokVydania.value +"; " + "Herci vo filme: " +herciVoFilme.value;
+        zobrazenie.append(p);
+
+    }
+</script>
+    
+</body>
+</html>
